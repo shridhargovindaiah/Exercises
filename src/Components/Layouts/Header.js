@@ -5,7 +5,7 @@ export default props => (
   <AppBar position="static">
     <Toolbar>
       <Typography component="h2" variant="headline" color="inherit">
-        h1. Heading
+        Fitness App
       </Typography>
     </Toolbar>
   </AppBar>
