@@ -10,12 +10,19 @@ export default class extends Component {
   }
 
   getExercises() {
+    const initialExercise = muscles.reduce(
+      (acc, muscle) => ({
+        ...acc,
+        [muscle]: []
+      }),
+      {}
+    )
     return Object.entries(
       this.state.exercises.reduce((acc, exercise) => {
         const { muscles } = exercise
-        acc[muscles] = acc[muscles] ? [...acc[muscles], exercise] : [exercise]
+        acc[muscles] = [...acc[muscles], exercise]
         return acc
-      }, {})
+      }, initialExercise)
     )
   }
 
@@ -29,17 +36,33 @@ export default class extends Component {
     }))
   }
 
+  handleCreateExercise = exercise => {
+    this.setState(({ exercises }) => ({
+      exercises: [...exercises, exercise]
+    }))
+  }
+
+  handleDeleteExercise = id => {
+    this.setState(({ exercises }) => ({
+      exercises: exercises.filter(exercise => exercise.id !== id)
+    }))
+  }
+
   render() {
     const exercises = this.getExercises()
     const { category, exercise } = this.state
     return (
       <Fragment>
-        <Header />
+        <Header
+          muscles={muscles}
+          onExerciseCreate={this.handleCreateExercise}
+        />
         <Exercises
           exercise={exercise}
           category={category}
           exercises={exercises}
           onSelect={this.handleExerciseSelect}
+          onDelete={this.handleDeleteExercise}
         />
         <Footer
           category={category}
